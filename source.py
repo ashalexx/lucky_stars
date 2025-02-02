@@ -1,34 +1,34 @@
 import random
 
 # Установка констант:
-GOLD = 'GOLD'  # Золото
-SILVER = 'SILVER'  # Серебро
-BRONZE = 'BRONZE'  # Бронза
+GOLD: str = 'GOLD'  # Золото
+SILVER: str = 'SILVER'  # Серебро
+BRONZE: str = 'BRONZE'  # Бронза
 
 # Графика для звезды, черепа и вопросительного знака:
-STAR_FACE = ["+-----------+",
-             "|     .     |",
-             "|    ,O,    |",
-             "| 'ooOOOoo' |",
-             "|   `OOO`   |",
-             "|   O' 'O   |",
-             "+-----------+"]
-SKULL_FACE = ['+-----------+',
-              '|    ___    |',
-              '|   /   \\   |',
-              '|  |() ()|  |',
-              '|   \\ ^ /   |',
-              '|    VVV    |',
-              '+-----------+']
-QUESTION_FACE = ['+-----------+',
-                 '|           |',
-                 '|           |',
-                 '|     ?     |',
-                 '|           |',
-                 '|           |',
-                 '+-----------+']
-FACE_WIDTH = 13
-FACE_HEIGHT = 7
+STAR_FACE: list[str] = ["+-----------+",
+                        "|     .     |",
+                        "|    ,O,    |",
+                        "| 'ooOOOoo' |",
+                        "|   `OOO`   |",
+                        "|   O' 'O   |",
+                        "+-----------+"]
+SKULL_FACE: list[str] = ['+-----------+',
+                         '|    ___    |',
+                         '|   /   \\   |',
+                         '|  |() ()|  |',
+                         '|   \\ ^ /   |',
+                         '|    VVV    |',
+                         '+-----------+']
+QUESTION_FACE: list[str] = ['+-----------+',
+                            '|           |',
+                            '|           |',
+                            '|     ?     |',
+                            '|           |',
+                            '|           |',
+                            '+-----------+']
+FACE_WIDTH: int = 13
+FACE_HEIGHT: int = 7
 
 print("""Игра "проверь удачу", в которой вы бросаете кости с изображениями звезд,\
 черепов и вопросительных знаков.
@@ -47,34 +47,34 @@ print("""Игра "проверь удачу", в которой вы броса
 
 print('How many players are there?')
 while True:  # Цикл до тех пор, пока пользователь не введет число.
-    response_player_count = input('> ')
-    if response_player_count.isdecimal() and int(response_player_count) > 1:
-        player_count = int(response_player_count)
+    response_players: str = input('> ')
+    if response_players.isdecimal() and int(response_players) > 1:
+        player_count: int = int(response_players)
         break
     # else:
     print('Please enter a number larger than 1.')
 
-player_names = []  # Список имен игроков.
-player_scores = {}  # Имена игроков как ключи, очки как значения.
+player_names: list[str] = []  # Список имен игроков.
+player_scores: dict[str, int] = {}  # Имена игроков как ключи, очки как значения.
 
 for i in range(player_count):
     while True:  # Цикл до тех пор, пока не введено имя.
         print('What is player #' + str(i + 1) + '\'s name?')
-        response_player_count = input('> ')
-        if response_player_count != '' and response_player_count not in player_names:
-            player_names.append(response_player_count)
-            player_scores[response_player_count] = 0
+        response_players: str = input('> ')
+        if response_players != '' and response_players not in player_names:
+            player_names.append(response_players)
+            player_scores[response_players] = 0
             break
         print('Please enter a name.')
 
 print()
 
-turn = 0  # Первый ход у игрока playerNames[0].
+turn: int = 0  # Первый ход у игрока playerNames[0].
 
 # (!) Раскомментируйте, чтобы игрок с именем 'Al' начал с тремя очками:
 # player_scores['Al'] = 3
 
-end_game_with = None
+end_game_with: str | None = None  # На счиет этого не уверен
 
 while True:  # Основной игровой цикл.
     print()
@@ -86,10 +86,10 @@ while True:  # Основной игровой цикл.
             print(', ', end='')
     print('\n')
 
-    stars_count = 0  # Счетчик собранных звезд.
-    skulls_count = 0  # Счетчик собранных черепов.
-    cup = ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)  # Кубок с костями.
-    hand = []  # Игрок начинает с пустой руки.
+    stars_count: int = 0  # Счетчик собранных звезд.
+    skulls_count: int = 0  # Счетчик собранных черепов.
+    cup: list[str] = ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)  # Кубок с костями.
+    hand: list[str] = []  # Игрок начинает с пустой руки.
     print('It is ' + player_names[turn] + '\'s turn.')
 
     while True:  # Цикл бросков костей.
@@ -103,9 +103,9 @@ while True:  # Основной игровой цикл.
         while len(hand) < 3:
             hand.append(cup.pop())
 
-        roll_results = []
+        roll_results: list[list[str]] = []
         for dice in hand:
-            roll = random.randint(1, 6)
+            roll: int = random.randint(1, 6)
             if dice == GOLD:
                 if 1 <= roll <= 3:
                     roll_results.append(STAR_FACE)
@@ -134,13 +134,13 @@ while True:  # Основной игровой цикл.
                     roll_results.append(SKULL_FACE)
                     skulls_count += 1
 
-        for lineNum in range(FACE_HEIGHT):
-            for diceNum in range(3):
-                print(roll_results[diceNum][lineNum] + ' ', end='')
+        for line_num in range(FACE_HEIGHT):
+            for dice_num in range(3):
+                print(roll_results[dice_num][line_num] + ' ', end='')
             print()  # Новая строка.
 
-        for diceType in hand:
-            print(diceType.center(FACE_WIDTH) + ' ', end='')
+        for dice_type in hand:
+            print(dice_type.center(FACE_WIDTH) + ' ', end='')
         print()  # Новая строка.
 
         print('Stars collected:', stars_count, '  Skulls collected:', skulls_count)
@@ -152,29 +152,29 @@ while True:  # Основной игровой цикл.
 
         print(player_names[turn] + ', do you want to roll again? Y/N')
         while True:  # Цикл до ввода Y или N:
-            response_player_count = input('> ').upper()
-            if response_player_count != '' and response_player_count[0] in ('Y', 'N'):
+            response_players: str = input('> ').upper()
+            if response_players != '' and response_players[0] in ('Y', 'N'):
                 break
             print('Please enter Yes or No.')
 
-        if response_player_count.startswith('N'):
+        if response_players.startswith('N'):
             print(player_names[turn], 'got', stars_count, 'stars!')
             player_scores[player_names[turn]] += stars_count
 
-            if (end_game_with == None and player_scores[player_names[turn]] >= 13):
+            if end_game_with is None and player_scores[player_names[turn]] >= 13:
                 print('\n\n' + ('!' * 60))
                 print(player_names[turn] + ' has reached 13 points!!!')
                 print('Everyone else will get one more turn!')
                 print(('!' * 60) + '\n\n')
-                end_game_with = player_names[turn]
+                end_game_with: str = player_names[turn]
             input('Press Enter to continue...')
             break
 
-        next_hand = []
+        next_hand: list[str] = []
         for i in range(3):
             if roll_results[i] == QUESTION_FACE:
                 next_hand.append(hand[i])  # Сохранение вопросительных знаков.
-        hand = next_hand
+        hand = next_hand  # Аннотацию делать еще раз, если уже выше анатировано?
 
     turn = (turn + 1) % player_count  # Переход хода к следующему игроку.
 
@@ -191,8 +191,8 @@ for i, name in enumerate(player_names):
         print(', ', end='')
 print('\n')
 
-highest_score = 0
-winners = []
+highest_score: int = 0
+winners: list[str] = []
 for name, score in player_scores.items():
     if score > highest_score:
         highest_score = score
