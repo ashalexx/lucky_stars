@@ -30,7 +30,8 @@ QUESTION_FACE: list[str] = ['+-----------+',
 FACE_WIDTH: int = 13
 FACE_HEIGHT: int = 7
 
-print("""Игра "проверь удачу", в которой вы бросаете кости с изображениями звезд,\
+print(
+"""Игра "проверь удачу", в которой вы бросаете кости с изображениями звезд,\
 черепов и вопросительных знаков.
 
 На своём ходу вы достаёте три случайные кости из кубка и бросаете их.
@@ -143,7 +144,8 @@ while True:  # Основной игровой цикл.
             print(dice_type.center(FACE_WIDTH) + ' ', end='')
         print()  # Новая строка.
 
-        print('Stars collected:', stars_count, '  Skulls collected:', skulls_count)
+        print('Stars collected:', stars_count,
+              '  Skulls collected:', skulls_count)
 
         if skulls_count >= 3:
             print('3 or more skulls means you\'ve lost your stars!')
@@ -161,7 +163,8 @@ while True:  # Основной игровой цикл.
             print(player_names[turn], 'got', stars_count, 'stars!')
             player_scores[player_names[turn]] += stars_count
 
-            if end_game_with is None and player_scores[player_names[turn]] >= 13:
+            if (end_game_with is None
+                    and player_scores[player_names[turn]] >= 13):
                 print('\n\n' + ('!' * 60))
                 print(player_names[turn] + ' has reached 13 points!!!')
                 print('Everyone else will get one more turn!')
