@@ -91,7 +91,8 @@ def check_gold_dice(
         skulls_count: int
 ) -> tuple[int, int]:
     """
-    Проверяет на выпавшей золотой кости, что именно выпало.
+    Проверяет на выпавшей золотой кости,
+    что именно выпало.
 
     :param data: list[list[str]]
     :param roll: int
@@ -119,7 +120,8 @@ def check_silver_dice(
         skulls_count: int
 ) -> tuple[int, int]:
     """
-    Проверяет на выпавшей серебряной кости, что именно выпало.
+    Проверяет на выпавшей серебряной кости,
+    что именно выпало.
 
     :param data: list[list[str]]
     :param roll: int
@@ -147,7 +149,8 @@ def check_bronze_dice(
         skulls_count: int
 ) -> tuple[int, int]:
     """
-    Проверяет на выпавшей бронзовой кости, что именно выпало.
+    Проверяет на выпавшей бронзовой кости,
+    что именно выпало.
 
     :param data: list[list[str]]
     :param roll: int
@@ -203,7 +206,6 @@ def roll_dice(
     return stars_count, skulls_count
 
 
-# TODO: Отображения текущих очков.
 def display_scores(player_names: list[str],
                    player_scores: dict[str, int]) -> None:
     """
@@ -223,7 +225,6 @@ def display_scores(player_names: list[str],
     print('\n')
 
 
-# TODO: Отображения результатов броска.
 def display_roll_results(roll_results: list[list[str]],
                          hand: list[str],
                          stars_count: int,
@@ -250,29 +251,4 @@ def display_roll_results(roll_results: list[list[str]],
           '  Skulls collected:', skulls_count)
 
 
-# TODO: Управления ходом игрока
-def player_turn(player_name: str,
-                cup: list[str],
-                player_scores: dict[str, int]):
-    """
-    Эта функция будет управлять ходом игрока,
-    включая бросок костей и принятие решений.
 
-    :return:
-    """
-    pass
-
-
-# TODO: Основной цикл игры
-def main_game_loop(player_names: list[str],
-                   player_scores: dict[str, int]):
-    """
-    Эта функция будет управлять основным игровым циклом,
-    включая переход хода между игроками.
-
-    :param player_names: list[str]
-    :param player_scores: dict[str, int]
-    :return:
-    """
-
-    pass
