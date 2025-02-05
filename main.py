@@ -1,8 +1,5 @@
 import random
-from string import ascii_letters
 
-import colorama
-from functools import cache
 
 import functions
 from dice import (
@@ -15,39 +12,39 @@ from dice import (
     SKULL_FACE,
     STAR_FACE
 )
+from dice import *
+
 from utils import about_game_info
 
 about_game_info()
 
 # Инициализация игры
-player_names, player_scores, player_count = functions.initialize_game()
+player_names, player_scores, player_count = functions.init_game()
 
 turn: int = 0  # Первый ход у игрока player_names[0].
 # (!) Раскомментируйте, чтобы игрок с именем 'Al' начал с тремя очками:
 # player_scores['Al'] = 3
 end_game_with: str | None = None
 
+# TODO: Функцию основного цикла игры
 while True:  # Основной игровой цикл.
     functions.display_scores(player_names, player_scores)
 
     stars_count: int = 0  # Счетчик собранных звезд.
     skulls_count: int = 0  # Счетчик собранных черепов.
 
-    # TODO: Антипаттерн - Магические числа
-    cup: list[str] = ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)  # Кубок с костями.
+    cup: list[str] = (([GOLD] * GOLD_DICE_QUANTITY) +
+                      ([SILVER] * SILVER_DICE_QUANTITY) +
+                      ([BRONZE] * BRONZE_DICE_QUANTITY))  # Кубок с костями.
     hand: list[str] = []  # Игрок начинает с пустой руки.
 
     print('It is ' + player_names[turn] + '\'s turn.')
 
-    # functions.player_turn(player_names[turn], cup, player_scores)
-
     while True:  # Цикл бросков костей.
-        print()
-        if (3 - len(hand)) > len(cup):  # Проверка на наличие костей в кубке.
-            print('There aren\'t enough dice left in the cup to '
-                  + 'continue ' + player_names[turn] + '\'s turn.')
-            break
+        # TODO: Функция проверки на наличие костей в кубке
+        functions.has_dice_in_cup(cup, hand, player_names[turn])
 
+        # TODO: Функция перемешивания костей в кубке
         random.shuffle(cup)  # Перемешивание костей в кубке.
         while len(hand) < 3:
             hand.append(cup.pop())
@@ -65,11 +62,13 @@ while True:  # Основной игровой цикл.
         # Отображение результата броска
         functions.display_roll_results(roll_results, hand, stars_count, skulls_count)
 
+        # TODO: Функция на проверку выпавших трех черепов
         if skulls_count >= 3:
             print('3 or more skulls means you\'ve lost your stars!')
             input('Press Enter to continue...')
             break
 
+        # TODO: Функция вопроса, хочет-ли игрок еще бросить кости
         print(player_names[turn] + ', do you want to roll again? Y/N')
         while True:  # Цикл до ввода Y или N:
             response_player: str = input('> ').upper()
@@ -77,6 +76,7 @@ while True:  # Основной игровой цикл.
                 break
             print('Please enter Yes or No.')
 
+        # TODO: Функция если он ответил 'N'
         if response_player.startswith('N'):
             print(player_names[turn], 'got', stars_count, 'stars!')
             player_scores[player_names[turn]] += stars_count
@@ -104,13 +104,7 @@ while True:  # Основной игровой цикл.
 
 print('The game has ended...')
 
-print()
-print('SCORES: ', end='')
-for i, name in enumerate(player_names):
-    print(name + ' = ' + str(player_scores[name]), end='')
-    if i != len(player_names) - 1:
-        print(', ', end='')
-print('\n')
+functions.display_scores(player_names, player_scores)
 
 highest_score: int = 0
 winners: list[str] = []

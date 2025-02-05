@@ -1,18 +1,19 @@
 import random
 
-from dice import (
-    BRONZE,
-    FACE_HEIGHT,
-    FACE_WIDTH,
-    GOLD,
-    QUESTION_FACE,
-    SILVER,
-    SKULL_FACE,
-    STAR_FACE
-)
+# from dice import (
+#     BRONZE,
+#     FACE_HEIGHT,
+#     FACE_WIDTH,
+#     GOLD,
+#     QUESTION_FACE,
+#     SILVER,
+#     SKULL_FACE,
+#     STAR_FACE
+# )
+from dice import *
 
 
-def initialize_game() -> tuple[list[str], dict[str, int], int]:
+def init_game() -> tuple[list[str], dict[str, int], int]:
     """
     Инициализирует игру, включая ввод количества игроков и их имен.
 
@@ -42,6 +43,26 @@ def initialize_game() -> tuple[list[str], dict[str, int], int]:
     return player_names, player_scores, player_count
 
 
+# TODO: Проверка на наличие костей в кубке
+def has_dice_in_cup(cup: list[str],
+                    hand: list[str],
+                    player_name: str) -> bool:
+    """
+    Проверка на наличие костей в кубке
+
+    :param cup: list[str]
+    :param hand: list[str]
+    :param player_name: str
+    :return: bool
+    """
+    print()
+    if (3 - len(hand)) > len(cup):  # Проверка на наличие костей в кубке.
+        print('There aren\'t enough dice left in the cup to '
+              + 'continue ' + player_name + '\'s turn.')
+        return True
+    return False
+
+
 def check_gold(
         data: list,
         roll: int,
@@ -49,6 +70,7 @@ def check_gold(
         skulls_count: int
 ) -> tuple[int, int]:
     """
+    Проверяет на выпавшей золотой кости, что именно выпало.
 
     :param data:
     :param roll:
@@ -68,17 +90,14 @@ def check_gold(
     return stars_count, skulls_count
 
 
-# TODO: Бросок ĸостей
-# TODO: Как сохранить колличество костей и
-#  звезд которые были в предыдущем ходу?
 def roll_dice(
         roll_results: list[list[str]],
         hand: list[str],
         stars_count: int,
-        skulls_count: int,
+        skulls_count: int
 ) -> tuple[int, int]:
     """
-    Эта функция будет отвечать за бросок костей
+    Отвечает за бросок костей
     и возвращать результаты броска.
 
     :param roll_results: list[str]
@@ -87,8 +106,6 @@ def roll_dice(
     :param skulls_count: int
     :return: roll_results, stars_count, skulls_count
     """
-
-
     for dice in hand:
         roll = random.randint(1, 6)
 
@@ -128,7 +145,7 @@ def roll_dice(
 def display_scores(player_names: list[str],
                    player_scores: dict[str, int]) -> None:
     """
-    Эта функция будет выводить текущие очки всех игроков.
+    Выводит текущие очки всех игроков.
 
     :param player_names: list[str]
     :param player_scores: dict[str, int]
@@ -150,7 +167,7 @@ def display_roll_results(roll_results: list[list[str]],
                          stars_count: int,
                          skulls_count: int) -> None:
     """
-    Эта функция будет отображать результаты броска костей.
+    Отображает результаты броска костей.
 
     :param roll_results: list[list[str]]
     :param hand: ist[str]
