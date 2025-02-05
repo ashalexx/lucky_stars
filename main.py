@@ -1,53 +1,26 @@
-import functions
 import random
+from string import ascii_letters
 
-# Установка констант:
-GOLD: str = 'GOLD'  # Золото
-SILVER: str = 'SILVER'  # Серебро
-BRONZE: str = 'BRONZE'  # Бронза
+import colorama
+from functools import cache
 
-# Графика для звезды, черепа и вопросительного знака:
-STAR_FACE: list[str] = ["+-----------+",
-                        "|     .     |",
-                        "|    ,O,    |",
-                        "| 'ooOOOoo' |",
-                        "|   `OOO`   |",
-                        "|   O' 'O   |",
-                        "+-----------+"]
-SKULL_FACE: list[str] = ['+-----------+',
-                         '|    ___    |',
-                         '|   /   \\   |',
-                         '|  |() ()|  |',
-                         '|   \\ ^ /   |',
-                         '|    VVV    |',
-                         '+-----------+']
-QUESTION_FACE: list[str] = ['+-----------+',
-                            '|           |',
-                            '|           |',
-                            '|     ?     |',
-                            '|           |',
-                            '|           |',
-                            '+-----------+']
-FACE_WIDTH: int = 13
-FACE_HEIGHT: int = 7
+import functions
+from dice import (
+    BRONZE,
+    FACE_HEIGHT,
+    FACE_WIDTH,
+    GOLD,
+    QUESTION_FACE,
+    SILVER,
+    SKULL_FACE,
+    STAR_FACE
+)
+from utils import about_game_info
 
-print("""Игра "проверь удачу", в которой вы бросаете кости с изображениями звезд,\
-черепов и вопросительных знаков.
-
-На своём ходу вы достаёте три случайные кости из кубка и бросаете их.
-Вы можете бросить кости снова или завершить ход. 
-Если выпадет три черепа, вы теряете все свои звезды и завершаете ход.
-
-Когда один из игроков наберет 13 очков, игра завершается. 
-Побеждает игрок с наибольшим количеством очков.
-
-В кубке 6 золотых, 4 серебряных и 3 бронзовых костей. 
-Золотые кости содержат больше звёзд, бронзовые - больше черепов, \
-а серебряные сбалансированы.
-""")
+about_game_info()
 
 # Инициализация игры
-player_names, player_scores, player_count = functions.initialize_game()  # Инициализация игры
+player_names, player_scores, player_count = functions.initialize_game()
 
 turn: int = 0  # Первый ход у игрока player_names[0].
 # (!) Раскомментируйте, чтобы игрок с именем 'Al' начал с тремя очками:
@@ -59,8 +32,11 @@ while True:  # Основной игровой цикл.
 
     stars_count: int = 0  # Счетчик собранных звезд.
     skulls_count: int = 0  # Счетчик собранных черепов.
+
+    # TODO: Антипаттерн - Магические числа
     cup: list[str] = ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)  # Кубок с костями.
     hand: list[str] = []  # Игрок начинает с пустой руки.
+
     print('It is ' + player_names[turn] + '\'s turn.')
 
     # functions.player_turn(player_names[turn], cup, player_scores)
@@ -76,9 +52,15 @@ while True:  # Основной игровой цикл.
         while len(hand) < 3:
             hand.append(cup.pop())
 
-        roll_results, new_stars_count, new_skulls_count = functions.roll_dice(hand)
-        stars_count += new_stars_count
-        skulls_count += new_skulls_count
+        roll_results: list[list[str]] = []
+
+        stars_count, skulls_count = functions.roll_dice(
+            roll_results,
+            hand,
+            stars_count,
+            skulls_count
+        )
+
 
         # Отображение результата броска
         functions.display_roll_results(roll_results, hand, stars_count, skulls_count)
@@ -145,6 +127,7 @@ else:
     print('The winners are: ' + ', '.join(winners))
 
 print('Thanks for playing!')
+
 
 if __name__ == '__main__':
     print('Запуск игры!')

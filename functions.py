@@ -1,41 +1,20 @@
 import random
 
-# Установка констант:
-GOLD: str = 'GOLD'  # Золото
-SILVER: str = 'SILVER'  # Серебро
-BRONZE: str = 'BRONZE'  # Бронза
-
-# Графика для звезды, черепа и вопросительного знака:
-STAR_FACE: list[str] = ["+-----------+",
-                        "|     .     |",
-                        "|    ,O,    |",
-                        "| 'ooOOOoo' |",
-                        "|   `OOO`   |",
-                        "|   O' 'O   |",
-                        "+-----------+"]
-SKULL_FACE: list[str] = ['+-----------+',
-                         '|    ___    |',
-                         '|   /   \\   |',
-                         '|  |() ()|  |',
-                         '|   \\ ^ /   |',
-                         '|    VVV    |',
-                         '+-----------+']
-QUESTION_FACE: list[str] = ['+-----------+',
-                            '|           |',
-                            '|           |',
-                            '|     ?     |',
-                            '|           |',
-                            '|           |',
-                            '+-----------+']
-FACE_WIDTH: int = 13
-FACE_HEIGHT: int = 7
+from dice import (
+    BRONZE,
+    FACE_HEIGHT,
+    FACE_WIDTH,
+    GOLD,
+    QUESTION_FACE,
+    SILVER,
+    SKULL_FACE,
+    STAR_FACE
+)
 
 
-# TODO: Инициализация игры
 def initialize_game() -> tuple[list[str], dict[str, int], int]:
     """
-    Эта функция будет отвечать за настройку игры,
-    включая ввод количества игроков и их имен.
+    Инициализирует игру, включая ввод количества игроков и их имен.
 
     :return: player_names, player_scores, player_count
     """
@@ -63,33 +42,65 @@ def initialize_game() -> tuple[list[str], dict[str, int], int]:
     return player_names, player_scores, player_count
 
 
+def check_gold(
+        data: list,
+        roll: int,
+        stars_count: int,
+        skulls_count: int
+) -> tuple[int, int]:
+    """
+
+    :param data:
+    :param roll:
+    :param stars_count:
+    :param skulls_count:
+    :return:
+    """
+    if 1 <= roll <= 3:
+        data.append(STAR_FACE)
+        stars_count += 1
+    elif 4 <= roll <= 5:
+        data.append(QUESTION_FACE)
+    else:
+        data.append(SKULL_FACE)
+        skulls_count += 1
+
+    return stars_count, skulls_count
+
+
 # TODO: Бросок ĸостей
 # TODO: Как сохранить колличество костей и
 #  звезд которые были в предыдущем ходу?
-def roll_dice(hand: list[str]) -> tuple[list[list[str]], int, int]:
+def roll_dice(
+        roll_results: list[list[str]],
+        hand: list[str],
+        stars_count: int,
+        skulls_count: int,
+) -> tuple[int, int]:
     """
     Эта функция будет отвечать за бросок костей
     и возвращать результаты броска.
 
+    :param roll_results: list[str]
     :param hand: list[str]
+    :param stars_count: int
+    :param skulls_count: int
     :return: roll_results, stars_count, skulls_count
     """
-    roll_results = []
-    stars_count = 0
-    skulls_count = 0
+
 
     for dice in hand:
         roll = random.randint(1, 6)
+
         if dice == GOLD:
-            if 1 <= roll <= 3:
-                roll_results.append(STAR_FACE)
-                stars_count += 1
-            elif 4 <= roll <= 5:
-                roll_results.append(QUESTION_FACE)
-            else:
-                roll_results.append(SKULL_FACE)
-                skulls_count += 1
+            stars_count, skulls_count = check_gold(
+                roll_results,
+                roll,
+                stars_count,
+                skulls_count
+            )
         elif dice == SILVER:
+            # TODO: Переделать наподобие блока if
             if 1 <= roll <= 2:
                 roll_results.append(STAR_FACE)
                 stars_count += 1
@@ -108,7 +119,9 @@ def roll_dice(hand: list[str]) -> tuple[list[list[str]], int, int]:
                 roll_results.append(SKULL_FACE)
                 skulls_count += 1
 
-    return roll_results, stars_count, skulls_count
+        # TODO: Использовать словарь, если будет возможность вместо if-elif
+
+    return stars_count, skulls_count
 
 
 # TODO: Отображения текущих очков.
@@ -169,7 +182,6 @@ def player_turn(player_name: str,
     :return:
     """
     pass
-
 
 
 # TODO: Основной цикл игры
