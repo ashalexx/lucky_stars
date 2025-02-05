@@ -1,4 +1,5 @@
 import random
+from collections.abc import Callable
 
 # from dice import (
 #     BRONZE,
@@ -43,7 +44,6 @@ def init_game() -> tuple[list[str], dict[str, int], int]:
     return player_names, player_scores, player_count
 
 
-# TODO: Проверка на наличие костей в кубке
 def has_dice_in_cup(cup: list[str],
                     hand: list[str],
                     player_name: str) -> bool:
@@ -63,8 +63,29 @@ def has_dice_in_cup(cup: list[str],
     return False
 
 
-def check_gold(
-        data: list,
+def shuffle_dice_in_cup(cup: list[str],
+                        hand: list[str]) -> None:
+    """
+
+    :param cup: list[str]
+    :param hand: list[int]
+    :return: None
+    """
+    random.shuffle(cup)  # Перемешивание костей в кубке.
+    while len(hand) < 3:
+        hand.append(cup.pop())
+
+
+def has_three_skulls(skulls_count: int) -> bool:
+    if skulls_count >= 3:
+        print('3 or more skulls means you\'ve lost your stars!')
+        input('Press Enter to continue...')
+        return True
+    return False
+
+
+def check_gold_dice(
+        data: list[list[str]],
         roll: int,
         stars_count: int,
         skulls_count: int
@@ -72,16 +93,72 @@ def check_gold(
     """
     Проверяет на выпавшей золотой кости, что именно выпало.
 
-    :param data:
-    :param roll:
-    :param stars_count:
-    :param skulls_count:
-    :return:
+    :param data: list[list[str]]
+    :param roll: int
+    :param stars_count: int
+    :param skulls_count: int
+    :return: stars_count, skulls_count
     """
     if 1 <= roll <= 3:
         data.append(STAR_FACE)
         stars_count += 1
     elif 4 <= roll <= 5:
+        data.append(QUESTION_FACE)
+    else:
+        data.append(SKULL_FACE)
+        skulls_count += 1
+
+    return stars_count, skulls_count
+
+
+# Проверка серебряной кости
+def check_silver_dice(
+        data: list[list[str]],
+        roll: int,
+        stars_count: int,
+        skulls_count: int
+) -> tuple[int, int]:
+    """
+    Проверяет на выпавшей серебряной кости, что именно выпало.
+
+    :param data: list[list[str]]
+    :param roll: int
+    :param stars_count: int
+    :param skulls_count: int
+    :return: stars_count, skulls_count
+    """
+    if 1 <= roll <= 2:
+        data.append(STAR_FACE)
+        stars_count += 1
+    elif 3 <= roll <= 4:
+        data.append(QUESTION_FACE)
+    else:
+        data.append(SKULL_FACE)
+        skulls_count += 1
+
+    return stars_count, skulls_count
+
+
+# Проверка бронзовой кости
+def check_bronze_dice(
+        data: list[list[str]],
+        roll: int,
+        stars_count: int,
+        skulls_count: int
+) -> tuple[int, int]:
+    """
+    Проверяет на выпавшей бронзовой кости, что именно выпало.
+
+    :param data: list[list[str]]
+    :param roll: int
+    :param stars_count: int
+    :param skulls_count: int
+    :return: stars_count, skulls_count
+    """
+    if roll == 1:
+        data.append(STAR_FACE)
+        stars_count += 1
+    elif 2 <= roll <= 4:
         data.append(QUESTION_FACE)
     else:
         data.append(SKULL_FACE)
@@ -106,37 +183,22 @@ def roll_dice(
     :param skulls_count: int
     :return: roll_results, stars_count, skulls_count
     """
+    callbacks: dict[str, Callable] = {
+        GOLD: check_gold_dice,
+        SILVER: check_silver_dice,
+        BRONZE: check_bronze_dice
+    }
+
     for dice in hand:
         roll = random.randint(1, 6)
 
-        if dice == GOLD:
-            stars_count, skulls_count = check_gold(
-                roll_results,
-                roll,
-                stars_count,
-                skulls_count
-            )
-        elif dice == SILVER:
-            # TODO: Переделать наподобие блока if
-            if 1 <= roll <= 2:
-                roll_results.append(STAR_FACE)
-                stars_count += 1
-            elif 3 <= roll <= 4:
-                roll_results.append(QUESTION_FACE)
-            else:
-                roll_results.append(SKULL_FACE)
-                skulls_count += 1
-        elif dice == BRONZE:
-            if roll == 1:
-                roll_results.append(STAR_FACE)
-                stars_count += 1
-            elif 2 <= roll <= 4:
-                roll_results.append(QUESTION_FACE)
-            else:
-                roll_results.append(SKULL_FACE)
-                skulls_count += 1
-
-        # TODO: Использовать словарь, если будет возможность вместо if-elif
+        # Использовал колбэки, крутая штука!
+        stars_count, skulls_count = callbacks.get(dice)(
+            roll_results,
+            roll,
+            stars_count,
+            skulls_count
+        )
 
     return stars_count, skulls_count
 

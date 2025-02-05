@@ -1,6 +1,3 @@
-import random
-
-
 import functions
 from dice import (
     BRONZE,
@@ -41,16 +38,15 @@ while True:  # Основной игровой цикл.
     print('It is ' + player_names[turn] + '\'s turn.')
 
     while True:  # Цикл бросков костей.
-        # TODO: Функция проверки на наличие костей в кубке
+        # Проверка на наличие костей в кубке
         functions.has_dice_in_cup(cup, hand, player_names[turn])
 
-        # TODO: Функция перемешивания костей в кубке
-        random.shuffle(cup)  # Перемешивание костей в кубке.
-        while len(hand) < 3:
-            hand.append(cup.pop())
+        # Перемешивания костей в кубке
+        functions.shuffle_dice_in_cup(cup, hand)
 
         roll_results: list[list[str]] = []
 
+        # Бросок костей
         stars_count, skulls_count = functions.roll_dice(
             roll_results,
             hand,
@@ -58,14 +54,14 @@ while True:  # Основной игровой цикл.
             skulls_count
         )
 
-
         # Отображение результата броска
-        functions.display_roll_results(roll_results, hand, stars_count, skulls_count)
+        functions.display_roll_results(roll_results,
+                                       hand,
+                                       stars_count,
+                                       skulls_count)
 
-        # TODO: Функция на проверку выпавших трех черепов
-        if skulls_count >= 3:
-            print('3 or more skulls means you\'ve lost your stars!')
-            input('Press Enter to continue...')
+        # Проверка на 3 черепа
+        if functions.has_three_skulls(skulls_count):
             break
 
         # TODO: Функция вопроса, хочет-ли игрок еще бросить кости
@@ -121,7 +117,3 @@ else:
     print('The winners are: ' + ', '.join(winners))
 
 print('Thanks for playing!')
-
-
-if __name__ == '__main__':
-    print('Запуск игры!')
