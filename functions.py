@@ -281,20 +281,20 @@ def no_in_response(response_player: str,
                    player_name: str,
                    player_scores: dict[str, int],
                    end_game_with: str | None
-                   ) -> bool:
+                   ) -> str:
     if response_player.startswith('N'):
         print(player_name, 'got', stars_count, 'stars!')
         player_scores[player_name] += stars_count
 
-        if end_game_with is None and player_scores[player_name] >= 13:
+        if not end_game_with and player_scores[player_name] >= 13:
             print('\n\n' + ('!' * 60))
             print(player_name + ' has reached 13 points!!!')
             print('Everyone else will get one more turn!')
             print(('!' * 60) + '\n\n')
             end_game_with = player_name
         input('Press Enter to continue...')
-        return True
-    return False
+        return end_game_with
+    return ""
 
 
 # Сохраняем вопросительные знаки

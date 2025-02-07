@@ -69,12 +69,14 @@ while True:  # Основной игровой цикл.
         response_player = functions.roll_dice_again(player_names[turn])
 
         # TODO: Если пользователь ответил НЕТ
-        if functions.no_in_response(response_player,
-                                    stars_count,
-                                    player_names[turn],
-                                    player_scores,
-                                    end_game_with
-                                    ):
+        end_game_with = functions.no_in_response(
+                response_player,
+                stars_count,
+                player_names[turn],
+                player_scores,
+                end_game_with
+        )
+        if end_game_with:
             break
 
         # Сохраняет вопросительные знаки
