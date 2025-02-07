@@ -1,0 +1,10 @@
+{
+  "num_players": 2,
+  "win_score": 13,
+  "dice_in_cup": {
+    "gold": 6,
+    "silver": 4,
+    "bronze": 3
+  },
+  "language": "ru"
+}
