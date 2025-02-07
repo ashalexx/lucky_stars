@@ -68,7 +68,7 @@ while True:  # Основной игровой цикл.
         # Хочет-ли игрок бросить кости еще раз?
         response_player = functions.roll_dice_again(player_names[turn])
 
-        # Если пользователь ответил НЕТ
+        # TODO: Если пользователь ответил НЕТ
         if functions.no_in_response(response_player,
                                     stars_count,
                                     player_names[turn],

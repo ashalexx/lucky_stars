@@ -67,6 +67,7 @@ def has_dice_in_cup(cup: list[str],
 def shuffle_dice_in_cup(cup: list[str],
                         hand: list[str]) -> None:
     """
+     Перемешиваем кости в кубке
 
     :param cup: list[str]
     :param hand: list[int]
@@ -78,6 +79,12 @@ def shuffle_dice_in_cup(cup: list[str],
 
 
 def has_three_skulls(skulls_count: int) -> bool:
+    """
+    Проверка на 3 черепа в руках игрока
+
+    :param skulls_count: int
+    :return: bool
+    """
     if skulls_count >= 3:
         print('3 or more skulls means you\'ve lost your stars!')
         input('Press Enter to continue...')
@@ -179,7 +186,7 @@ def roll_dice(
 ) -> tuple[int, int]:
     """
     Отвечает за бросок костей
-    и возвращать результаты броска.
+    и возвращает результаты броска.
 
     :param roll_results: list[str]
     :param hand: list[str]
@@ -279,7 +286,7 @@ def no_in_response(response_player: str,
         print(player_name, 'got', stars_count, 'stars!')
         player_scores[player_name] += stars_count
 
-        if (end_game_with is None and player_scores[player_name] >= 13):
+        if end_game_with is None and player_scores[player_name] >= 13:
             print('\n\n' + ('!' * 60))
             print(player_name + ' has reached 13 points!!!')
             print('Everyone else will get one more turn!')
@@ -294,6 +301,13 @@ def no_in_response(response_player: str,
 def save_question(hand: list[str],
                   roll_results: list[list[str]]
                 ) -> list[str]:
+    """
+    Сохраняет вопросительные знаки
+
+    :param hand: list[str]
+    :param roll_results: list[list[str]]
+    :return: оставшиеся вопросительные знаки в руке
+    """
     next_hand: list[str] = []
     for i in range(3):
         if roll_results[i] == QUESTION_FACE:
@@ -303,11 +317,24 @@ def save_question(hand: list[str],
 
 # Переход хода другому игроку
 def switch_player(turn: int, player_count: int) -> int:
+    """
+    Осуществляет переход кода другому игроку
+
+    :param turn: int
+    :param player_count: int
+    :return: Следующий игрок
+    """
     return (turn + 1) % player_count
 
 
 # Объявления победителя(ей) и его(их) вывод
-def winner(player_scores: dict[str, int],) -> None:
+def winner(player_scores: dict[str, int]) -> None:
+    """
+    Выводит имена победителей
+
+    :param player_scores: dict[str, int]
+    :return: None
+    """
     highest_score: int = 0
     winners: list[str] = []
     for name, score in player_scores.items():
@@ -323,3 +350,5 @@ def winner(player_scores: dict[str, int],) -> None:
         print('The winners are: ' + ', '.join(winners))
 
     print('Thanks for playing!')
+
+
