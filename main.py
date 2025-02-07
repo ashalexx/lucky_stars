@@ -20,7 +20,7 @@ player_names, player_scores, player_count = functions.init_game()
 
 turn: int = 0  # Первый ход у игрока player_names[0].
 # (!) Раскомментируйте, чтобы игрок с именем 'Al' начал с тремя очками:
-# player_scores['Al'] = 3
+# player_scores['Al'] = 13
 end_game_with: str | None = None
 
 # TODO: Функцию основного цикла игры
@@ -38,6 +38,7 @@ while True:  # Основной игровой цикл.
     print('It is ' + player_names[turn] + '\'s turn.')
 
     while True:  # Цикл бросков костей.
+
         # Проверка на наличие костей в кубке
         functions.has_dice_in_cup(cup, hand, player_names[turn])
 
@@ -64,37 +65,25 @@ while True:  # Основной игровой цикл.
         if functions.has_three_skulls(skulls_count):
             break
 
-        # TODO: Функция вопроса, хочет-ли игрок еще бросить кости
-        print(player_names[turn] + ', do you want to roll again? Y/N')
-        while True:  # Цикл до ввода Y или N:
-            response_player: str = input('> ').upper()
-            if response_player != '' and response_player[0] in ('Y', 'N'):
-                break
-            print('Please enter Yes or No.')
+        # Хочет-ли игрок бросить кости еще раз?
+        response_player = functions.roll_dice_again(player_names[turn])
 
-        # TODO: Функция если он ответил 'N'
-        if response_player.startswith('N'):
-            print(player_names[turn], 'got', stars_count, 'stars!')
-            player_scores[player_names[turn]] += stars_count
-
-            if (end_game_with is None
-                    and player_scores[player_names[turn]] >= 13):
-                print('\n\n' + ('!' * 60))
-                print(player_names[turn] + ' has reached 13 points!!!')
-                print('Everyone else will get one more turn!')
-                print(('!' * 60) + '\n\n')
-                end_game_with: str = player_names[turn]
-            input('Press Enter to continue...')
+        # Если пользователь ответил НЕТ
+        if functions.no_in_response(response_player,
+                                    stars_count,
+                                    player_names[turn],
+                                    player_scores,
+                                    end_game_with
+                                    ):
             break
 
-        next_hand: list[str] = []
-        for i in range(3):
-            if roll_results[i] == QUESTION_FACE:
-                next_hand.append(hand[i])  # Сохранение вопросительных знаков.
-        hand = next_hand
+        # Сохраняет вопросительные знаки
+        hand = functions.save_question(hand, roll_results)
 
-    turn = (turn + 1) % player_count  # Переход хода к следующему игроку.
+    # Переход хода к другому игроку
+    turn = functions.switch_player(turn, player_count)
 
+    # TODO: Функция конца игры
     if end_game_with == player_names[turn]:  # Завершение игры.
         break
 
@@ -102,18 +91,5 @@ print('The game has ended...')
 
 functions.display_scores(player_names, player_scores)
 
-highest_score: int = 0
-winners: list[str] = []
-for name, score in player_scores.items():
-    if score > highest_score:
-        highest_score = score
-        winners = [name]
-    elif score == highest_score:
-        winners.append(name)
-
-if len(winners) == 1:
-    print('The winner is ' + winners[0] + '!!!')
-else:
-    print('The winners are: ' + ', '.join(winners))
-
-print('Thanks for playing!')
+# Объявления победителя(ей) и его(их) вывод
+functions.winner(player_scores)

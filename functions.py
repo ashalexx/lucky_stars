@@ -12,6 +12,7 @@ from collections.abc import Callable
 #     STAR_FACE
 # )
 from dice import *
+# from main import end_game_with
 
 
 def init_game() -> tuple[list[str], dict[str, int], int]:
@@ -251,4 +252,74 @@ def display_roll_results(roll_results: list[list[str]],
           '  Skulls collected:', skulls_count)
 
 
+def roll_dice_again(player_name: str) -> str:
+    """
+    Игрок хочет бросить кости еще раз?
 
+    :param player_name: str
+    :return: response_player
+    """
+    print(player_name + ', do you want to roll again? Y/N')
+    while True:  # Цикл до ввода Y или N:
+        response_player: str = input('> ').upper()
+        if response_player != '' and response_player[0] in ('Y', 'N'):
+            break
+        print('Please enter Yes or No.')
+    return response_player
+
+
+# TODO: решить как изменить переменную end_game_with
+def no_in_response(response_player: str,
+                   stars_count: int,
+                   player_name: str,
+                   player_scores: dict[str, int],
+                   end_game_with: str | None
+                   ) -> bool:
+    if response_player.startswith('N'):
+        print(player_name, 'got', stars_count, 'stars!')
+        player_scores[player_name] += stars_count
+
+        if (end_game_with is None and player_scores[player_name] >= 13):
+            print('\n\n' + ('!' * 60))
+            print(player_name + ' has reached 13 points!!!')
+            print('Everyone else will get one more turn!')
+            print(('!' * 60) + '\n\n')
+            end_game_with = player_name
+        input('Press Enter to continue...')
+        return True
+    return False
+
+
+# Сохраняем вопросительные знаки
+def save_question(hand: list[str],
+                  roll_results: list[list[str]]
+                ) -> list[str]:
+    next_hand: list[str] = []
+    for i in range(3):
+        if roll_results[i] == QUESTION_FACE:
+            next_hand.append(hand[i])  # Сохранение вопросительных знаков.
+    return next_hand
+
+
+# Переход хода другому игроку
+def switch_player(turn: int, player_count: int) -> int:
+    return (turn + 1) % player_count
+
+
+# Объявления победителя(ей) и его(их) вывод
+def winner(player_scores: dict[str, int],) -> None:
+    highest_score: int = 0
+    winners: list[str] = []
+    for name, score in player_scores.items():
+        if score > highest_score:
+            highest_score = score
+            winners = [name]
+        elif score == highest_score:
+            winners.append(name)
+
+    if len(winners) == 1:
+        print('The winner is ' + winners[0] + '!!!')
+    else:
+        print('The winners are: ' + ', '.join(winners))
+
+    print('Thanks for playing!')
