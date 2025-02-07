@@ -21,6 +21,11 @@ from functions import (
 from settings import MESSAGES, PLAYERS_COUNT
 
 
+# TODO: Поработать над изменениями выводов, чтобы выводился
+#  текст на том языка, что из конфигураций
+
+
+# TODO: Убрать или переписать документацию к функции run()
 def run() -> None:
     """
     Игра "проверь удачу", где вы бросаете кости, чтобы собрать как можно больше звёзд.
@@ -30,14 +35,16 @@ def run() -> None:
     """
     print_game_info()
     lang: str = input(f"Choose language ({', '.join(MESSAGES.keys())}): ")
+    # TODO: Поработать с названиями переменных
     numPlayers = PLAYERS_COUNT
     playerNames: list[str] = []
     playerScores: dict[str, int] = {}
 
     get_players_name(playerNames, playerScores, numPlayers)
 
+    # TODO: Вынести функции в модуль dice.py
     def check_gold_dice(
-        data: list[list[str]], roll: int, stars_count: int, skulls_count: int
+            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
     ) -> tuple[int, int]:
         """
         Проверяет на выпавшей золотой кости,
@@ -61,7 +68,7 @@ def run() -> None:
         return stars_count, skulls_count
 
     def check_silver_dice(
-        data: list[list[str]], roll: int, stars_count: int, skulls_count: int
+            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
     ) -> tuple[int, int]:
         """
         Проверяет на выпавшей серебряной кости,
@@ -85,7 +92,7 @@ def run() -> None:
         return stars_count, skulls_count
 
     def check_bronze_dice(
-        data: list[list[str]], roll: int, stars_count: int, skulls_count: int
+            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
     ) -> tuple[int, int]:
         """
         Проверяет на выпавшей бронзовой кости,
@@ -108,6 +115,7 @@ def run() -> None:
 
         return stars_count, skulls_count
 
+    # TODO: вынести за функции run() (в этом модуле остается)
     def game_logic():
         endGameWith: str | None = None
         turn: int = 0  # Первый ход у игрока playerNames[0].
@@ -119,7 +127,7 @@ def run() -> None:
             skulls: int = 0
             hand: list[str] = []
             dice_cup: list[str] = (
-                ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)
+                    ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)
             )
 
             cup = dice_cup  # Кубок с костями.
@@ -145,6 +153,7 @@ def run() -> None:
                         rollResults, roll, stars, skulls
                     )
 
+                # TODO: Продолжим здесь (это для меня)
                 for lineNum in range(FACE_HEIGHT):
                     for diceNum in range(3):
                         print(rollResults[diceNum][lineNum] + " ", end="")
@@ -173,8 +182,8 @@ def run() -> None:
                     playerScores[playerNames[turn]] += stars
 
                     if (
-                        endGameWith == None
-                        and playerScores[playerNames[turn]] >= 13
+                            endGameWith == None
+                            and playerScores[playerNames[turn]] >= 13
                     ):
                         print("\n\n" + ("!" * 60))
                         print(playerNames[turn] + " has reached 13 points!!!")
@@ -201,6 +210,7 @@ def run() -> None:
 
     game_logic()
 
+    # TODO: вынести за функции run() (в этом модуле остается)
     def get_winners(scores: dict[str, int]) -> list[str]:
         max_score: int = 0
         winners: list[str] = []
@@ -214,7 +224,7 @@ def run() -> None:
 
         return winners
 
-    def print_winners():
+    def print_winners() -> None:
         print_scores_info(playerNames, playerScores)
         winners: list[str] = get_winners(playerScores)
 
@@ -224,6 +234,8 @@ def run() -> None:
             print("The winners are: " + ", ".join(winners))
 
         print("Thanks for playing!")
+
+    print_winners()
 
 
 if __name__ == "__main__":

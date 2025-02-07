@@ -9,6 +9,10 @@ config = {
     "language": "ru",
 }
 
+# TODO: Прочитать настройки из json файла,
+#  обработать с try/except FileNotFoundError
+
+
 # with open("config.json", mode="r", encoding="UTF-8") as config:
 #     pass
 

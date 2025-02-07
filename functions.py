@@ -1,5 +1,7 @@
 from settings import LANGUAGE, MESSAGES
 
+# TODO: Поработать над изменениями выводов, чтобы выводился
+#  текст на том языка, что из конфигураций
 
 def get_players_count() -> int:
     msg = MESSAGES.get(LANGUAGE).get("players_count")
@@ -30,6 +32,7 @@ def get_players_name(
     print()
 
 
+# TODO: Приводить к PEP8
 def print_game_info() -> None:
     print(
         """Игра "проверь удачу", в которой вы бросаете кости с изображениями звезд, черепов и вопросительных знаков.
