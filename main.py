@@ -10,16 +10,29 @@ from dice import (
     SILVER,
     SKULL_FACE,
     STAR_FACE,
+    check_gold_dice,
+    check_bronze_dice,
+    check_silver_dice,
 )
 from functions import (
     dice_exists,
     fill_player_hand,
     get_players_name,
-    print_game_info,
     print_scores_info,
+    get_players_count
 )
-from settings import MESSAGES, PLAYERS_COUNT
-
+from utils import (
+    about_game_info
+)
+from settings import (
+    # MESSAGES,
+    PLAYERS_COUNT,
+    # LANGUAGE,
+    GOLD_QUANTITY,
+    SILVER_QUANTITY,
+    BRONZE_QUANTITY,
+    WIN_SCORE
+)
 
 # TODO: Поработать над изменениями выводов, чтобы выводился
 #  текст на том языка, что из конфигураций
@@ -28,114 +41,43 @@ from settings import MESSAGES, PLAYERS_COUNT
 # TODO: Убрать или переписать документацию к функции run()
 def run() -> None:
     """
-    Игра "проверь удачу", где вы бросаете кости, чтобы собрать как можно больше звёзд.
-    Вы можете бросать кости сколько угодно раз, но если выпадет три черепа, вы теряете все звёзды.
+    Запуск игры
 
-    Игра вдохновлена настольной игрой Zombie Dice - смотреть здесь https://tesera.ru/game/zombie-dice/
+    :return: None
     """
-    print_game_info()
-    lang: str = input(f"Choose language ({', '.join(MESSAGES.keys())}): ")
-    # TODO: Поработать с названиями переменных
-    numPlayers = PLAYERS_COUNT
-    playerNames: list[str] = []
-    playerScores: dict[str, int] = {}
+    about_game_info()
+    # lang: str = LANGUAGE  # Параллельный импорт, как избежать?
+    # Корректно ли так делать?
+    num_players = PLAYERS_COUNT or get_players_count()
+    player_names: list[str] = []
+    player_scores: dict[str, int] = {}
 
-    get_players_name(playerNames, playerScores, numPlayers)
-
-    # TODO: Вынести функции в модуль dice.py
-    def check_gold_dice(
-            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
-    ) -> tuple[int, int]:
-        """
-        Проверяет на выпавшей золотой кости,
-        что именно выпало.
-
-        :param data: list[list[str]]
-        :param roll: int
-        :param stars_count: int
-        :param skulls_count: int
-        :return: stars_count, skulls_count
-        """
-        if 1 <= roll <= 3:
-            data.append(STAR_FACE)
-            stars_count += 1
-        elif 4 <= roll <= 5:
-            data.append(QUESTION_FACE)
-        else:
-            data.append(SKULL_FACE)
-            skulls_count += 1
-
-        return stars_count, skulls_count
-
-    def check_silver_dice(
-            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
-    ) -> tuple[int, int]:
-        """
-        Проверяет на выпавшей серебряной кости,
-        что именно выпало.
-
-        :param data: list[list[str]]
-        :param roll: int
-        :param stars_count: int
-        :param skulls_count: int
-        :return: stars_count, skulls_count
-        """
-        if 1 <= roll <= 2:
-            data.append(STAR_FACE)
-            stars_count += 1
-        elif 3 <= roll <= 4:
-            data.append(QUESTION_FACE)
-        else:
-            data.append(SKULL_FACE)
-            skulls_count += 1
-
-        return stars_count, skulls_count
-
-    def check_bronze_dice(
-            data: list[list[str]], roll: int, stars_count: int, skulls_count: int
-    ) -> tuple[int, int]:
-        """
-        Проверяет на выпавшей бронзовой кости,
-        что именно выпало.
-
-        :param data: list[list[str]]
-        :param roll: int
-        :param stars_count: int
-        :param skulls_count: int
-        :return: stars_count, skulls_count
-        """
-        if roll == 1:
-            data.append(STAR_FACE)
-            stars_count += 1
-        elif 2 <= roll <= 4:
-            data.append(QUESTION_FACE)
-        else:
-            data.append(SKULL_FACE)
-            skulls_count += 1
-
-        return stars_count, skulls_count
+    get_players_name(player_names, player_scores, num_players)
 
     # TODO: вынести за функции run() (в этом модуле остается)
     def game_logic():
-        endGameWith: str | None = None
+        end_game_with: str | None = None
         turn: int = 0  # Первый ход у игрока playerNames[0].
 
         while True:
-            print_scores_info(playerNames, playerScores)
+            print_scores_info(player_names, player_scores)
 
             stars: int = 0
             skulls: int = 0
             hand: list[str] = []
+
             dice_cup: list[str] = (
-                    ([GOLD] * 6) + ([SILVER] * 4) + ([BRONZE] * 3)
+                    ([GOLD] * GOLD_QUANTITY) +
+                    ([SILVER] * SILVER_QUANTITY) +
+                    ([BRONZE] * BRONZE_QUANTITY)
             )
 
             cup = dice_cup  # Кубок с костями.
 
-            print("It is " + playerNames[turn] + "'s turn.")
+            print("It is " + player_names[turn] + "'s turn.")
             while True:  # Цикл бросков костей.
                 print()
-                if dice_exists(hand, cup, playerNames, turn):
+                if dice_exists(hand, cup, player_names, turn):
                     break
 
                 random.shuffle(cup)
@@ -146,21 +88,21 @@ def run() -> None:
                     BRONZE: check_bronze_dice,
                 }
 
-                rollResults = []
+                roll_results = []
                 for dice in hand:
                     roll = random.randint(1, 6)
                     stars, skulls = callbacks.get(dice)(
-                        rollResults, roll, stars, skulls
+                        roll_results, roll, stars, skulls
                     )
 
                 # TODO: Продолжим здесь (это для меня)
-                for lineNum in range(FACE_HEIGHT):
-                    for diceNum in range(3):
-                        print(rollResults[diceNum][lineNum] + " ", end="")
+                for line_num in range(FACE_HEIGHT):
+                    for dice_num in range(3):
+                        print(roll_results[dice_num][line_num] + " ", end="")
                     print()  # Новая строка.
 
-                for diceType in hand:
-                    print(diceType.center(FACE_WIDTH) + " ", end="")
+                for dice_type in hand:
+                    print(dice_type.center(FACE_WIDTH) + " ", end="")
                 print()  # Новая строка.
 
                 print("Stars collected:", stars, "  Skulls collected:", skulls)
@@ -170,7 +112,7 @@ def run() -> None:
                     input("Press Enter to continue...")
                     break
 
-                print(playerNames[turn] + ", do you want to roll again? Y/N")
+                print(player_names[turn] + ", do you want to roll again? Y/N")
                 while True:  # Цикл до ввода Y или N:
                     response = input("> ").upper()
                     if response != "" and response[0] in ("Y", "N"):
@@ -178,32 +120,32 @@ def run() -> None:
                     print("Please enter Yes or No.")
 
                 if response.startswith("N"):
-                    print(playerNames[turn], "got", stars, "stars!")
-                    playerScores[playerNames[turn]] += stars
+                    print(player_names[turn], "got", stars, "stars!")
+                    player_scores[player_names[turn]] += stars
 
                     if (
-                            endGameWith == None
-                            and playerScores[playerNames[turn]] >= 13
+                            end_game_with == None
+                            and player_scores[player_names[turn]] >= 13
                     ):
                         print("\n\n" + ("!" * 60))
-                        print(playerNames[turn] + " has reached 13 points!!!")
+                        print(player_names[turn] + " has reached 13 points!!!")
                         print("Everyone else will get one more turn!")
                         print(("!" * 60) + "\n\n")
-                        endGameWith = playerNames[turn]
+                        end_game_with = player_names[turn]
                     input("Press Enter to continue...")
                     break
 
-                nextHand = []
+                next_hand = []
                 for i in range(3):
-                    if rollResults[i] == QUESTION_FACE:
-                        nextHand.append(
+                    if roll_results[i] == QUESTION_FACE:
+                        next_hand.append(
                             hand[i]
                         )  # Сохранение вопросительных знаков.
-                hand = nextHand
+                hand = next_hand
 
-            turn = (turn + 1) % numPlayers  # Переход хода к следующему игроку.
+            turn = (turn + 1) % num_players  # Переход хода к следующему игроку.
 
-            if endGameWith == playerNames[turn]:  # Завершение игры.
+            if end_game_with == player_names[turn]:  # Завершение игры.
                 break
 
         print("The game has ended...")
@@ -225,8 +167,8 @@ def run() -> None:
         return winners
 
     def print_winners() -> None:
-        print_scores_info(playerNames, playerScores)
-        winners: list[str] = get_winners(playerScores)
+        print_scores_info(player_names, player_scores)
+        winners: list[str] = get_winners(player_scores)
 
         if len(winners) == 1:
             print("The winner is " + winners[0] + "!!!")
