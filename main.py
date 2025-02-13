@@ -34,6 +34,35 @@ from settings import (
     WIN_SCORE
 )
 
+
+def get_winners(scores: dict[str, int]) -> list[str]:
+    max_score: int = 0
+    winners: list[str] = []
+
+    for name, score in scores.items():
+        if score > max_score:
+            max_score = score
+            winners = [name]
+        elif score == max_score:
+            winners.append(name)
+
+    return winners
+
+
+def print_winners(
+        name: list[str],
+        scores: dict[str, int]) -> None:
+    print_scores_info(name, scores)
+    winners: list[str] = get_winners(scores)
+
+    if len(winners) == 1:
+        print("The winner is " + winners[0] + "!!!")
+    else:
+        print("The winners are: " + ", ".join(winners))
+
+    print("Thanks for playing!")
+
+
 # TODO: Поработать над изменениями выводов, чтобы выводился
 #  текст на том языка, что из конфигураций
 
@@ -75,7 +104,7 @@ def run() -> None:
             cup = dice_cup  # Кубок с костями.
 
             # print(MESSAGES.get(LANGUAGE).get('turn_player')
-            #       .format(player_name = player_names[turn]))
+            #       .format(name = player_names[turn]))
             print("It is " + player_names[turn] + "'s turn.")
             while True:  # Цикл бросков костей.
                 print()
@@ -154,33 +183,7 @@ def run() -> None:
 
     game_logic()
 
-    # TODO: вынести за функции run() (в этом модуле остается)
-    def get_winners(scores: dict[str, int]) -> list[str]:
-        max_score: int = 0
-        winners: list[str] = []
-
-        for name, score in scores.items():
-            if score > max_score:
-                max_score = score
-                winners = [name]
-            elif score == max_score:
-                winners.append(name)
-
-        return winners
-
-    def print_winners() -> None:
-        print_scores_info(player_names, player_scores)
-        winners: list[str] = get_winners(player_scores)
-
-        if len(winners) == 1:
-            print("The winner is " + winners[0] + "!!!")
-        else:
-            print("The winners are: " + ", ".join(winners))
-
-        print("Thanks for playing!")
-
-    print_winners()
-
+    print_winners(player_names, player_scores)
 
 if __name__ == "__main__":
     run()

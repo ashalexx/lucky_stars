@@ -40,7 +40,7 @@ MESSAGES: dict[str, dict] = {
            "scores": "Результаты: {players}",
            "not_much_in_cup": "В стаканчике осталось недостаточно кубиков, "
                                "чтобы {name} смог походить.",
-           "turn_player": " {player_name} ходит."
+           "turn_player": " {name} ходит."
            },
     "en": {"players_count": "How many players are there?",
            "player_name": "What is player #{num}'s name?",
@@ -50,7 +50,7 @@ MESSAGES: dict[str, dict] = {
            "not_much_in_cup": "There aren't enough dice left in "
                                "the cup to continue "
                                "{name}'s turn.",
-           "turn_player": "It is {player_name}'s turn."
+           "turn_player": "It is {name}'s turn."
            },
 }
 
