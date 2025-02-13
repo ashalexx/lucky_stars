@@ -74,6 +74,8 @@ def run() -> None:
 
             cup = dice_cup  # Кубок с костями.
 
+            # print(MESSAGES.get(LANGUAGE).get('turn_player')
+            #       .format(player_name = player_names[turn]))
             print("It is " + player_names[turn] + "'s turn.")
             while True:  # Цикл бросков костей.
                 print()

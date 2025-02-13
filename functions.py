@@ -48,7 +48,7 @@ def dice_exists(
 
     if (max_dice_count - len(player_hand)) > len(dice_cup):
         print(
-            MESSAGES.get(LANGUAGE).get("not_mutch_in_cup").
+            MESSAGES.get(LANGUAGE).get("not_much_in_cup").
             format(name=names[turn])
         )
         return True

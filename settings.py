@@ -38,17 +38,19 @@ MESSAGES: dict[str, dict] = {
            "number_too_small": "Пожалуйста введите число больше чем 1.",
            "name_enter": "Пожалуйста, введите имя.",
            "scores": "Результаты: {players}",
-           "not_mutch_in_cup": "В стаканчике осталось недостаточно кубиков, "
-                               "чтобы {name} смог походить."
+           "not_much_in_cup": "В стаканчике осталось недостаточно кубиков, "
+                               "чтобы {name} смог походить.",
+           "turn_player": " {player_name} ходит."
            },
     "en": {"players_count": "How many players are there?",
            "player_name": "What is player #{num}'s name?",
            "number_too_small": "Please enter a number larger than 1.",
            "name_enter": "Please enter a name.",
            "scores": "Scores: {players}",
-           "not_mutch_in_cup": "There aren't enough dice left in "
+           "not_much_in_cup": "There aren't enough dice left in "
                                "the cup to continue "
-                               "{name}'s turn."
+                               "{name}'s turn.",
+           "turn_player": "It is {player_name}'s turn."
            },
 }
 
