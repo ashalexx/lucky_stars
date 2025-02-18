@@ -116,3 +116,26 @@ def check_bronze_dice(
         skulls_count += 1
 
     return stars_count, skulls_count
+
+
+def draw_rolls_block(data: list[list[str]]) -> None:
+    for i in range(FACE_HEIGHT):
+        for j in range(3):
+            print(data[j][i] + " ", end="")
+        print()
+
+
+def show_caption_rolls(hand: list[str]) -> None:
+    for dice_type in hand:
+        print(dice_type.center(FACE_WIDTH) + " ", end="")
+    print()
+
+
+def get_next_hand(data: list[list[str]], hand: list[str]) -> list[str]:
+    """Сохранение вопросительных знаков."""
+    next_hand: list[str] = []
+    for i in range(3):
+        if data[i] == QUESTION_FACE:
+            next_hand.append(hand[i])
+
+    return next_hand

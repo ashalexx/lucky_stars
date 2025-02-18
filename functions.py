@@ -1,4 +1,4 @@
-from settings import LANGUAGE, MESSAGES
+from config import LANGUAGE, MESSAGES
 
 # TODO: Поработать над изменениями выводов, чтобы выводился
 #  текст на том языка, что из конфигураций

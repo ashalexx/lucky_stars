@@ -19,3 +19,11 @@ def about_game_info() -> None:
     а серебряные сбалансированы.\n"""
     )
 
+def response_roll_again() -> None:
+    while True:
+        response: str = input("> ").upper()
+
+        if response and response[0] in ("Y", "N"):
+            break
+
+        print("Please enter Yes or No.")
