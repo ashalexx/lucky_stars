@@ -62,3 +62,31 @@ def fill_player_hand(
     max_dice_count: int = 3
     while len(player_hand) < max_dice_count:
         player_hand.append(dice_cup.pop())
+
+
+def get_winners(scores: dict[str, int]) -> list[str]:
+    max_score: int = 0
+    winners: list[str] = []
+
+    for name, score in scores.items():
+        if score > max_score:
+            max_score = score
+            winners = [name]
+        elif score == max_score:
+            winners.append(name)
+
+    return winners
+
+
+def print_winners(
+        name: list[str],
+        scores: dict[str, int]) -> None:
+    print_scores_info(name, scores)
+    winners: list[str] = get_winners(scores)
+
+    if len(winners) == 1:
+        print("The winner is " + winners[0] + "!!!")
+    else:
+        print("The winners are: " + ", ".join(winners))
+
+    print("Thanks for playing!")

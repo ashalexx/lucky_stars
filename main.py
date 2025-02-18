@@ -19,7 +19,7 @@ from functions import (
     fill_player_hand,
     get_players_name,
     print_scores_info,
-    get_players_count
+    get_players_count, print_winners
 )
 from utils import (
     about_game_info
@@ -33,35 +33,6 @@ from settings import (
     BRONZE_QUANTITY,
     WIN_SCORE
 )
-
-
-def get_winners(scores: dict[str, int]) -> list[str]:
-    max_score: int = 0
-    winners: list[str] = []
-
-    for name, score in scores.items():
-        if score > max_score:
-            max_score = score
-            winners = [name]
-        elif score == max_score:
-            winners.append(name)
-
-    return winners
-
-
-def print_winners(
-        name: list[str],
-        scores: dict[str, int]) -> None:
-    print_scores_info(name, scores)
-    winners: list[str] = get_winners(scores)
-
-    if len(winners) == 1:
-        print("The winner is " + winners[0] + "!!!")
-    else:
-        print("The winners are: " + ", ".join(winners))
-
-    print("Thanks for playing!")
-
 
 # TODO: Поработать над изменениями выводов, чтобы выводился
 #  текст на том языка, что из конфигураций
