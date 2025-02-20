@@ -30,7 +30,7 @@ def read_config(
 
 game_config = read_config()
 
-LANGUAGE: str = game_config.get("language")
+LANGUAGE: str = game_config.get("language", "en")
 PLAYERS_COUNT: int = game_config.get("num_players")
 GOLD_QUANTITY: int = game_config.get('dice_in_cup').get('gold')
 SILVER_QUANTITY: int = game_config.get('dice_in_cup').get('silver')

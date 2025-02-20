@@ -17,7 +17,7 @@ from functions import (
     fill_player_hand,
     get_players_name,
     print_scores_info,
-    get_players_count
+    get_players_count, print_winners, get_winners
 )
 from utils import (
     about_game_info
@@ -25,44 +25,12 @@ from utils import (
 from config import (
     PLAYERS_COUNT,
     LANGUAGE,
-    MESSAGES,
     GOLD_QUANTITY,
     SILVER_QUANTITY,
     BRONZE_QUANTITY,
-    WIN_SCORE
+    WIN_SCORE,
+    get_message
 )
-
-
-def get_winners(scores: dict[str, int]) -> list[str]:
-    max_score: int = 0
-    winners: list[str] = []
-
-    for name, score in scores.items():
-        if score > max_score:
-            max_score = score
-            winners = [name]
-        elif score == max_score:
-            winners.append(name)
-
-    return winners
-
-
-def print_winners(
-        name: list[str],
-        scores: dict[str, int]) -> None:
-    print_scores_info(name, scores)
-    winners: list[str] = get_winners(scores)
-
-    if len(winners) == 1:
-        print("The winner is " + winners[0] + "!!!")
-    else:
-        print("The winners are: " + ", ".join(winners))
-
-    print("Thanks for playing!")
-
-
-# TODO: Поработать над изменениями выводов, чтобы выводился
-#  текст на том языка, что из конфигураций
 
 
 def game_logic(player_names: list[str],
@@ -84,9 +52,8 @@ def game_logic(player_names: list[str],
                 ([BRONZE] * BRONZE_QUANTITY)
         )
 
-        print(MESSAGES.get(LANGUAGE).get('turn_player')
+        print(get_message(LANGUAGE, 'turn_player')
               .format(name=player_names[turn]))
-        print("It is " + player_names[turn] + "'s turn.")
         while True:  # Цикл бросков костей.
             print()
             if dice_exists(hand, dice_cup, player_names, turn):
@@ -110,33 +77,48 @@ def game_logic(player_names: list[str],
             draw_rolls_block(roll_results)
             show_caption_rolls(hand)
 
-            print("Stars collected:", stars, "  Skulls collected:", skulls)
+            print(get_message(
+                LANGUAGE,
+                "collected").format(stars=stars, skulls=skulls))
 
             if skulls >= 3:
-                print("3 or more skulls means you've lost your stars!")
-                input("Press Enter to continue...")
+                print(get_message(LANGUAGE, "alot_of_skulls"))
+                input(get_message(LANGUAGE, "pres_to_continue"))
                 break
 
-            print(player_names[turn] + ", do you want to roll again? Y/N")
+            print(
+                get_message(
+                    LANGUAGE,
+                    "roll_again").
+                format(name=player_names[turn])
+            )
             while True:  # Цикл до ввода Y или N:
                 response: str = input("> ").upper()
 
                 if response and response[0] in ("Y", "N"):
                     break
 
-                print("Please enter Yes or No.")
+                print(get_message(LANGUAGE, "yes_or_no"))
 
             if response.startswith("N"):
-                print(player_names[turn], "got", stars, "stars!")
+                print(get_message(
+                    LANGUAGE,
+                    "player_stars").format(name=player_names[turn], stars=stars))
                 player_scores[player_names[turn]] += stars
 
-                if end_game_with is None and player_scores[player_names[turn]] >= WIN_SCORE:
+                if (end_game_with is None and
+                        player_scores[player_names[turn]] >= WIN_SCORE):
                     print("\n\n" + ("!" * 60))
-                    print(player_names[turn] + f" has reached {WIN_SCORE} points!!!")
-                    print("Everyone else will get one more turn!")
+                    print(get_message(
+                        LANGUAGE,
+                        "player_reached_win_score")
+                          .format(name=player_names[turn], score=WIN_SCORE))
+                    # print(player_names[turn] + f" has reached {WIN_SCORE} points!!!")
+                    print(get_message(LANGUAGE, "extra_turn_notification"))
+                    # print("Everyone else will get one more turn!")
                     print(("!" * 60) + "\n\n")
                     end_game_with = player_names[turn]
-                input("Press Enter to continue...")
+                input(get_message(LANGUAGE, "pres_to_continue"))
                 break
 
             hand = get_next_hand(roll_results, hand)
@@ -147,10 +129,10 @@ def game_logic(player_names: list[str],
         if end_game_with == player_names[turn]:  # Завершение игры.
             break
 
-    print("The game has ended...")
+    print(get_message(LANGUAGE, "end_game"))
 
 
-# TODO: Убрать или переписать документацию к функции run()
+# Имеет смысл на вход функции run() давать lang?
 def run() -> None:
     """
     Запуск игры
@@ -158,16 +140,18 @@ def run() -> None:
     :return: None
     """
     about_game_info()
-    # lang: str = LANGUAGE  # Параллельный импорт, как избежать?
-    # Корректно ли так делать?
+    # lang: str = LANGUAGE
     num_players = PLAYERS_COUNT or get_players_count()
     player_names: list[str] = []
     player_scores: dict[str, int] = {}
 
     get_players_name(player_names, player_scores, num_players)
-    # TODO: вынести за функции run() (в этом модуле остается)
+
     game_logic(player_names, player_scores, num_players)
-    print_winners(player_names, player_scores)
+
+    winners: list[str] = get_winners(player_scores)
+    print_scores_info(player_names, player_scores)
+    print_winners(winners)
 
 
 if __name__ == "__main__":
