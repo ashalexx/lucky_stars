@@ -1,4 +1,4 @@
-from config import get_message, LANGUAGE
+from config import get_message
 
 STAR_FACE: list[str] = [
     "+-----------+",
@@ -28,9 +28,9 @@ QUESTION_FACE: list[str] = [
     "+-----------+",
 ]
 
-GOLD: str = get_message(LANGUAGE, "gold")
-SILVER: str = get_message(LANGUAGE, "silver")
-BRONZE: str = get_message(LANGUAGE, "bronze")
+GOLD: str = get_message("gold")
+SILVER: str = get_message("silver")
+BRONZE: str = get_message("bronze")
 
 FACE_WIDTH: int = 13
 FACE_HEIGHT: int = 7

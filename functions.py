@@ -1,7 +1,4 @@
-from config import (
-    LANGUAGE,
-    get_message
-)
+from config import get_message
 
 
 def get_players_count() -> int:
@@ -10,7 +7,7 @@ def get_players_count() -> int:
 
     :return: int
     """
-    msg = get_message(LANGUAGE, "players_count")
+    msg = get_message("players_count")
 
     print(msg)
     while True:
@@ -18,7 +15,7 @@ def get_players_count() -> int:
         if count.isdigit() and int(count) > 1:
             return int(count)
 
-        print(get_message(LANGUAGE, 'number_too_small'))
+        print(get_message('number_too_small'))
 
 
 def get_players_name(
@@ -37,7 +34,7 @@ def get_players_name(
     """
     for i in range(players_count):
         while True:
-            print(get_message(LANGUAGE, "player_name").format(num=i + 1))
+            print(get_message("player_name").format(num=i + 1))
             name = input("> ")
 
             if name and name not in names:
@@ -45,7 +42,7 @@ def get_players_name(
                 scores[name] = 0
                 break
 
-            print(get_message(LANGUAGE, "name_enter"))
+            print(get_message("name_enter"))
     print()
 
 
@@ -60,7 +57,7 @@ def print_scores_info(
     :return: None
     """
     players: str = ", ".join(f"{name} = {scores[name]}" for name in names)
-    print(get_message(LANGUAGE, "scores").format(players=players))
+    print(get_message("scores").format(players=players))
 
 
 def dice_exists(
@@ -83,7 +80,7 @@ def dice_exists(
 
     if (max_dice_count - len(player_hand)) > len(dice_cup):
         print(
-            get_message(LANGUAGE, "not_much_in_cup").
+            get_message("not_much_in_cup").
             format(name=names[turn])
         )
         return True
@@ -117,9 +114,11 @@ def get_winners(scores: dict[str, int]) -> list[str]:
     winners: list[str] = []
 
     for name, score in scores.items():
+
         if score > max_score:
             max_score = score
-            winners = [name]
+            winners.clear()
+            winners.append(name)
         elif score == max_score:
             winners.append(name)
 
@@ -128,14 +127,15 @@ def get_winners(scores: dict[str, int]) -> list[str]:
 
 def print_winners(winners: list[str]) -> None:
     """
-    Печатает имена победителей.
+    Выводит имена победителей.
 
     :param winners: list[str]
     :return: None
     """
     if len(winners) == 1:
-        print(get_message(LANGUAGE, "winner").format(name=winners[0]))
+        print(get_message("winner").format(name=winners[0]))
     else:
-        print(get_message(LANGUAGE, "winners").format(names=winners))
+        print(get_message("winners").format(names=winners))
 
+    # TODO: перевод текста.
     print("Thanks for playing!")

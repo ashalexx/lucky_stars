@@ -1,3 +1,5 @@
+from config.game import LANGUAGE
+
 __all__ = [
     "get_message"
 ]
@@ -54,16 +56,16 @@ MESSAGES: dict[str, dict] = {
     },
 }
 
-def get_message(lang: str, key: str) -> str:
+
+def get_message(key: str,
+                lang: str = LANGUAGE,
+                default: str = "Message not found") -> str:
     """
     Функция для получения сообщения по языку и ключу.
 
-    :param lang: ru, en ...
-    :param key: Ключ словаря
+    :param lang: Язык интерфейса.
+    :param key: Ключ словаря.
+    :param default: Сообщение об ошибке.
     :return: Сообщение на выбранном языке
     """
-    if lang not in MESSAGES:
-        lang = "en"
-    return MESSAGES.get(lang, {}).get(
-        key,
-        "Сообщение не найдено/Message not found")
+    return MESSAGES.get(lang).get(key, default)
