@@ -27,7 +27,8 @@ MESSAGES: dict[str, dict] = {
         "player_stars": "{name} собрал {stars} звезд!",
         "player_reached_win_score": "{name} набрал {score} очков!!!",
         "extra_turn_notification": "Каждый игрок делает еще один бросок!",
-        "end_game": "Игра окончена..."
+        "end_game": "Игра окончена...",
+        "thanks_for_playing": "Спасибо за игру!!"
     },
     "en": {
         "gold": "GOLD",
@@ -52,7 +53,8 @@ MESSAGES: dict[str, dict] = {
         "player_stars": "{name} got {stars} stars!",
         "player_reached_win_score": "{name} has reached {score} points!!!",
         "extra_turn_notification": "Everyone else will get one more turn!",
-        "end_game": "The game has ended..."
+        "end_game": "The game has ended...",
+        "thanks_for_playing": "Thanks for playing!"
     },
 }
 
@@ -66,6 +68,6 @@ def get_message(key: str,
     :param lang: Язык интерфейса.
     :param key: Ключ словаря.
     :param default: Сообщение об ошибке.
-    :return: Сообщение на выбранном языке
+    :return: Сообщение на выбранном языке.
     """
     return MESSAGES.get(lang).get(key, default)

@@ -46,11 +46,12 @@ def check_gold_dice(
     Проверяет на выпавшей золотой кости,
     что именно выпало.
 
-    :param data: list[list[str]]
-    :param roll: int
-    :param stars_count: int
-    :param skulls_count: int
-    :return: stars_count, skulls_count
+    :param data: Список содержащий список символов,
+    для вывода изображения из символов на экран.
+    :param roll: Номер выпавшей стороны кубика.
+    :param stars_count: Кол-во звезд.
+    :param skulls_count: Кол-во черепов.
+    :return: Кортеж из кол-ва звезд и костей.
     """
     if 1 <= roll <= 3:
         data.append(STAR_FACE)
@@ -74,11 +75,12 @@ def check_silver_dice(
     Проверяет на выпавшей серебряной кости,
     что именно выпало.
 
-    :param data: list[list[str]]
-    :param roll: int
-    :param stars_count: int
-    :param skulls_count: int
-    :return: stars_count, skulls_count
+    :param data: Список содержащий список символов,
+    для вывода изображения из символов на экран.
+    :param roll: Номер выпавшей стороны кубика.
+    :param stars_count: Кол-во звезд.
+    :param skulls_count: Кол-во черепов.
+    :return: Кортеж из кол-ва звезд и костей.
     """
     if 1 <= roll <= 2:
         data.append(STAR_FACE)
@@ -102,11 +104,12 @@ def check_bronze_dice(
     Проверяет на выпавшей бронзовой кости,
     что именно выпало.
 
-    :param data: list[list[str]]
-    :param roll: int
-    :param stars_count: int
-    :param skulls_count: int
-    :return: stars_count, skulls_count
+    :param data: Список содержащий список символов,
+    для вывода изображения из символов на экран.
+    :param roll: Номер выпавшей стороны кубика.
+    :param stars_count: Кол-во звезд.
+    :param skulls_count: Кол-во черепов.
+    :return: Кортеж из кол-ва звезд и черепов.
     """
     if roll == 1:
         data.append(STAR_FACE)
@@ -124,7 +127,8 @@ def draw_rolls_block(data: list[list[str]]) -> None:
     """
     Выводит изображения выпавших сторон костей.
 
-    :param data: list[list[str]]
+    :param data: Список содержащий список символов,
+    для вывода изображения из символов на экран.
     :return: None
     """
     for i in range(FACE_HEIGHT):
@@ -137,7 +141,7 @@ def show_caption_rolls(hand: list[str]) -> None:
     """
     Выводит цвета костей.
 
-    :param hand: list[str]
+    :param hand: Список костей в руке игрока.
     :return: None
     """
     for dice_type in hand:
@@ -149,9 +153,10 @@ def get_next_hand(data: list[list[str]], hand: list[str]) -> list[str]:
     """
     Сохранение вопросительных знаков.
 
-    :param data: list[list[str]]
-    :param hand: list[str]
-    :return: list[str]
+    :param data: Список содержащий список символов,
+    для вывода изображения из символов на экран.
+    :param hand: Список костей в руке игрока.
+    :return: Оставшиеся вопросительные знаки в руке игрока.
     """
     next_hand: list[str] = []
     for i in range(3):

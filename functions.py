@@ -5,7 +5,7 @@ def get_players_count() -> int:
     """
     Просит ввести кол-во игроков.
 
-    :return: int
+    :return: Число игроков.
     """
     msg = get_message("players_count")
 
@@ -24,7 +24,7 @@ def get_players_name(
         players_count: int
 ) -> None:
     """
-    Просит ввести имена игроков.
+    Просит ввести имя игрока.
 
     :param names: Список, где хранятся имена игроков.
     :param scores: Словарь, где ключ = Имя игрока,
@@ -52,8 +52,9 @@ def print_scores_info(
     """
     Выводит результаты игры игроков.
 
-    :param names: List[str]
-    :param scores: dict[str, int]
+    :param names: Список, где хранятся имена игроков.
+    :param scores: Словарь, где ключ = Имя игрока,
+    а значение = его очки.
     :return: None
     """
     players: str = ", ".join(f"{name} = {scores[name]}" for name in names)
@@ -70,11 +71,11 @@ def dice_exists(
     Видит сколько кубиков осталось в кубке,
     определяет, можно-ли кидать игроку еще раз.
 
-    :param player_hand: list[str]
-    :param dice_cup: list[str]
-    :param names: list[str]
-    :param turn: int
-    :return: bool
+    :param player_hand: Список кубиков в руке игрока.
+    :param dice_cup: Список кубиков в кубке.
+    :param names: Список, где хранятся имена игроков.
+    :param turn: Индекс имени игрока в списке имен игроков.
+    :return: Bool
     """
     max_dice_count: int = 3
 
@@ -94,8 +95,8 @@ def fill_player_hand(
     """
     Пополнение руки игрока кубиками, до 3х штук.
 
-    :param player_hand: list[str]
-    :param dice_cup: list[str]
+    :param player_hand: Список кубиков в руке игрока.
+    :param dice_cup: Список кубиков в кубке.
     :return: None
     """
     max_dice_count: int = 3
@@ -107,8 +108,9 @@ def get_winners(scores: dict[str, int]) -> list[str]:
     """
     Определяет победителя.
 
-    :param scores: dict[str, int]
-    :return: list[str]
+    :param scores: Словарь, где ключ = Имя игрока,
+    а значение = его очки.
+    :return: Список имен победителей.
     """
     max_score: int = 0
     winners: list[str] = []
@@ -129,7 +131,7 @@ def print_winners(winners: list[str]) -> None:
     """
     Выводит имена победителей.
 
-    :param winners: list[str]
+    :param winners: Список имен победителей.
     :return: None
     """
     if len(winners) == 1:
@@ -137,5 +139,4 @@ def print_winners(winners: list[str]) -> None:
     else:
         print(get_message("winners").format(names=winners))
 
-    # TODO: перевод текста.
-    print("Thanks for playing!")
+    print(get_message("thanks_for_playing"))

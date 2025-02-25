@@ -1,6 +1,8 @@
+import logging
 import random
 from typing import Callable
 
+# from config.gamelog import game_logger
 from dice import (
     BRONZE,
     GOLD,
@@ -24,7 +26,6 @@ from utils import (
 )
 from config import (
     PLAYERS_COUNT,
-
     GOLD_QUANTITY,
     SILVER_QUANTITY,
     BRONZE_QUANTITY,
@@ -52,10 +53,8 @@ def game_logic(player_names: list[str],
                 ([BRONZE] * BRONZE_QUANTITY)
         )
 
-        print(get_message(
-
-            'turn_player'
-        ).format(name=player_names[turn]))
+        print(get_message('turn_player')
+              .format(name=player_names[turn]))
         while True:  # Цикл бросков костей.
             print()
             if dice_exists(hand, dice_cup, player_names, turn):
@@ -84,6 +83,9 @@ def game_logic(player_names: list[str],
                     "collected"
                 ).format(stars=stars, skulls=skulls)
             )
+
+            logging.info(f'Игрок {player_names[turn]}'
+                         f' бросил(а) кости: {stars} звезды, {skulls} череп.')
 
             if skulls >= 3:
                 print(get_message("alot_of_skulls"))
@@ -144,6 +146,9 @@ def run() -> None:
     about_game_info()
 
     num_players = PLAYERS_COUNT or get_players_count()
+
+    logging.info(f'Игра начата. Кол-во игроков: {num_players}')
+
     player_names: list[str] = []
     player_scores: dict[str, int] = {}
 
@@ -151,6 +156,8 @@ def run() -> None:
     game_logic(player_names, player_scores, num_players)
 
     winners: list[str] = get_winners(player_scores)
+
+    logging.info(f'Игра завершена. Победитель: {winners[0]} с {player_scores[winners[0]]} очками.')
 
     print_scores_info(player_names, player_scores)
     print_winners(winners)
