@@ -3,36 +3,36 @@ import os
 import random
 from typing import Callable
 
-from dice import (
-    BRONZE,
-    GOLD,
-    SILVER,
-    check_gold_dice,
-    check_bronze_dice,
-    check_silver_dice,
-    draw_rolls_block,
-    show_caption_rolls,
-    get_next_hand,
-)
-from functions import (
-    dice_exists,
-    fill_player_hand,
-    get_players_name,
-    print_scores_info,
-    get_players_count,
-    print_winners,
-    get_winners,
-)
-from utils import about_game_info
 from config import (
-    PLAYERS_COUNT,
-    GOLD_QUANTITY,
-    SILVER_QUANTITY,
     BRONZE_QUANTITY,
+    GOLD_QUANTITY,
+    PLAYERS_COUNT,
+    SILVER_QUANTITY,
     WIN_SCORE,
     get_message,
 )
 from config.gamelog import LOG_DIRS, LOGS_FILE_PATH
+from dice import (
+    BRONZE,
+    GOLD,
+    SILVER,
+    check_bronze_dice,
+    check_gold_dice,
+    check_silver_dice,
+    draw_rolls_block,
+    get_next_hand,
+    show_caption_rolls,
+)
+from functions import (
+    dice_exists,
+    fill_player_hand,
+    get_players_count,
+    get_players_name,
+    get_winners,
+    print_scores_info,
+    print_winners,
+)
+from utils import about_game_info
 
 
 def game_logic(

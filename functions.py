@@ -2,7 +2,6 @@ import logging
 
 from config import get_message
 
-
 logger = logging.getLogger(__name__)
 
 
