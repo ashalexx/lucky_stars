@@ -1,4 +1,9 @@
+import logging
+
 from config import get_message
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_players_count() -> int:
@@ -102,6 +107,8 @@ def fill_player_hand(
     max_dice_count: int = 3
     while len(player_hand) < max_dice_count:
         player_hand.append(dice_cup.pop())
+
+    logger.warning(f"Рука игрока {player_hand}")
 
 
 def get_winners(scores: dict[str, int]) -> list[str]:

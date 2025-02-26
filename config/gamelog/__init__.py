@@ -1,1 +1,1 @@
-from .game_logger import *
+from .settings import *

@@ -1,8 +1,8 @@
 import logging
+import os
 import random
 from typing import Callable
 
-# from config.gamelog import game_logger
 from dice import (
     BRONZE,
     GOLD,
@@ -19,7 +19,9 @@ from functions import (
     fill_player_hand,
     get_players_name,
     print_scores_info,
-    get_players_count, print_winners, get_winners
+    get_players_count,
+    print_winners,
+    get_winners
 )
 from utils import (
     about_game_info
@@ -32,6 +34,7 @@ from config import (
     WIN_SCORE,
     get_message
 )
+from config.gamelog import LOG_DIRS, LOGS_FILE_PATH
 
 
 def game_logic(player_names: list[str],
@@ -84,7 +87,7 @@ def game_logic(player_names: list[str],
                 ).format(stars=stars, skulls=skulls)
             )
 
-            logging.info(f'Игрок {player_names[turn]}'
+            logger.info(f'Игрок {player_names[turn]}'
                          f' бросил(а) кости: {stars} звезды, {skulls} череп.')
 
             if skulls >= 3:
@@ -147,7 +150,7 @@ def run() -> None:
 
     num_players = PLAYERS_COUNT or get_players_count()
 
-    logging.info(f'Игра начата. Кол-во игроков: {num_players}')
+    logger.info(f'Игра начата. Кол-во игроков: {num_players}')
 
     player_names: list[str] = []
     player_scores: dict[str, int] = {}
@@ -157,11 +160,21 @@ def run() -> None:
 
     winners: list[str] = get_winners(player_scores)
 
-    logging.info(f'Игра завершена. Победитель: {winners[0]} с {player_scores[winners[0]]} очками.')
+    logger.info(f'Игра завершена. Победитель: {winners[0]} с {player_scores[winners[0]]} очками.')
 
     print_scores_info(player_names, player_scores)
     print_winners(winners)
 
 
 if __name__ == "__main__":
+    os.makedirs(LOG_DIRS, exist_ok=True)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="[%(asctime)s] [%(levelname)s] %(message)s",
+        filename=LOGS_FILE_PATH,
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    logger = logging.getLogger(__name__)
+
     run()
