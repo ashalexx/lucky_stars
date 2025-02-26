@@ -11,7 +11,7 @@ __all__ = [
 
 
 def read_config(
-        filename: str = 'config.json'
+    filename: str = "config.json",
 ) -> dict[str, int | str, str | str, dict[str, int]] | None:
     """
     Читает конфиг указанного json файла.
@@ -24,15 +24,16 @@ def read_config(
             return json.load(config)
 
     except FileNotFoundError:
-        print('Такого JSON файла нет!\n'
-              'Укажите имя существующего JSON файла.')
+        print(
+            "Такого JSON файла нет!\n" "Укажите имя существующего JSON файла."
+        )
 
 
 game_config = read_config()
 
 LANGUAGE: str = game_config.get("language", "en")
 PLAYERS_COUNT: int = game_config.get("num_players")
-GOLD_QUANTITY: int = game_config.get('dice_in_cup').get('gold')
-SILVER_QUANTITY: int = game_config.get('dice_in_cup').get('silver')
-BRONZE_QUANTITY: int = game_config.get('dice_in_cup').get('bronze')
-WIN_SCORE: int = game_config.get('win_score')
+GOLD_QUANTITY: int = game_config.get("dice_in_cup").get("gold")
+SILVER_QUANTITY: int = game_config.get("dice_in_cup").get("silver")
+BRONZE_QUANTITY: int = game_config.get("dice_in_cup").get("bronze")
+WIN_SCORE: int = game_config.get("win_score")

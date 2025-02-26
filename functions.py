@@ -20,13 +20,11 @@ def get_players_count() -> int:
         if count.isdigit() and int(count) > 1:
             return int(count)
 
-        print(get_message('number_too_small'))
+        print(get_message("number_too_small"))
 
 
 def get_players_name(
-        names: list[str],
-        scores: dict[str, int],
-        players_count: int
+    names: list[str], scores: dict[str, int], players_count: int
 ) -> None:
     """
     Просит ввести имя игрока.
@@ -51,9 +49,7 @@ def get_players_name(
     print()
 
 
-def print_scores_info(
-        names: list[str],
-        scores: dict[str, int]) -> None:
+def print_scores_info(names: list[str], scores: dict[str, int]) -> None:
     """
     Выводит результаты игры игроков.
 
@@ -67,10 +63,7 @@ def print_scores_info(
 
 
 def dice_exists(
-        player_hand: list[str],
-        dice_cup: list[str],
-        names: list[str],
-        turn: int
+    player_hand: list[str], dice_cup: list[str], names: list[str], turn: int
 ) -> bool:
     """
     Видит сколько кубиков осталось в кубке,
@@ -85,17 +78,14 @@ def dice_exists(
     max_dice_count: int = 3
 
     if (max_dice_count - len(player_hand)) > len(dice_cup):
-        print(
-            get_message("not_much_in_cup").
-            format(name=names[turn])
-        )
+        print(get_message("not_much_in_cup").format(name=names[turn]))
         return True
     return False
 
 
 def fill_player_hand(
-        player_hand: list[str],
-        dice_cup: list[str],
+    player_hand: list[str],
+    dice_cup: list[str],
 ) -> None:
     """
     Пополнение руки игрока кубиками, до 3х штук.

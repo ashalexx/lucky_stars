@@ -1,8 +1,6 @@
 from config.game import LANGUAGE
 
-__all__ = [
-    "get_message"
-]
+__all__ = ["get_message"]
 
 MESSAGES: dict[str, dict] = {
     "ru": {
@@ -15,7 +13,7 @@ MESSAGES: dict[str, dict] = {
         "name_enter": "Пожалуйста, введите имя.",
         "scores": "Результаты: {players}",
         "not_much_in_cup": "В кубке осталось недостаточно кубиков, "
-                           "чтобы {name} смог походить.",
+        "чтобы {name} смог походить.",
         "turn_player": " {name} ходит.",
         "winner": "Победил {name}!!!",
         "winners": "Победители: {', '.join({names})}",
@@ -28,7 +26,7 @@ MESSAGES: dict[str, dict] = {
         "player_reached_win_score": "{name} набрал {score} очков!!!",
         "extra_turn_notification": "Каждый игрок делает еще один бросок!",
         "end_game": "Игра окончена...",
-        "thanks_for_playing": "Спасибо за игру!!"
+        "thanks_for_playing": "Спасибо за игру!!",
     },
     "en": {
         "gold": "GOLD",
@@ -40,8 +38,8 @@ MESSAGES: dict[str, dict] = {
         "name_enter": "Please enter a name.",
         "scores": "Scores: {players}",
         "not_much_in_cup": "There aren't enough dice left in "
-                           "the cup to continue "
-                           "{name}'s turn.",
+        "the cup to continue "
+        "{name}'s turn.",
         "turn_player": "It is {name}'s turn.",
         "winner": "The winner is {name}!!!",
         "winners": "The winners are: {', '.join({names})}",
@@ -54,14 +52,14 @@ MESSAGES: dict[str, dict] = {
         "player_reached_win_score": "{name} has reached {score} points!!!",
         "extra_turn_notification": "Everyone else will get one more turn!",
         "end_game": "The game has ended...",
-        "thanks_for_playing": "Thanks for playing!"
+        "thanks_for_playing": "Thanks for playing!",
     },
 }
 
 
-def get_message(key: str,
-                lang: str = LANGUAGE,
-                default: str = "Message not found") -> str:
+def get_message(
+    key: str, lang: str = LANGUAGE, default: str = "Message not found"
+) -> str:
     """
     Функция для получения сообщения по языку и ключу.
 

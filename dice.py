@@ -37,10 +37,7 @@ FACE_HEIGHT: int = 7
 
 
 def check_gold_dice(
-        data: list[list[str]],
-        roll: int,
-        stars_count: int,
-        skulls_count: int
+    data: list[list[str]], roll: int, stars_count: int, skulls_count: int
 ) -> tuple[int, int]:
     """
     Проверяет на выпавшей золотой кости,
@@ -66,10 +63,7 @@ def check_gold_dice(
 
 
 def check_silver_dice(
-        data: list[list[str]],
-        roll: int,
-        stars_count: int,
-        skulls_count: int
+    data: list[list[str]], roll: int, stars_count: int, skulls_count: int
 ) -> tuple[int, int]:
     """
     Проверяет на выпавшей серебряной кости,
@@ -95,10 +89,7 @@ def check_silver_dice(
 
 
 def check_bronze_dice(
-        data: list[list[str]],
-        roll: int,
-        stars_count: int,
-        skulls_count: int
+    data: list[list[str]], roll: int, stars_count: int, skulls_count: int
 ) -> tuple[int, int]:
     """
     Проверяет на выпавшей бронзовой кости,

@@ -21,25 +21,23 @@ from functions import (
     print_scores_info,
     get_players_count,
     print_winners,
-    get_winners
+    get_winners,
 )
-from utils import (
-    about_game_info
-)
+from utils import about_game_info
 from config import (
     PLAYERS_COUNT,
     GOLD_QUANTITY,
     SILVER_QUANTITY,
     BRONZE_QUANTITY,
     WIN_SCORE,
-    get_message
+    get_message,
 )
 from config.gamelog import LOG_DIRS, LOGS_FILE_PATH
 
 
-def game_logic(player_names: list[str],
-               player_scores: dict[str, int],
-               num_players: int) -> None:
+def game_logic(
+    player_names: list[str], player_scores: dict[str, int], num_players: int
+) -> None:
     end_game_with: str | None = None
     turn: int = 0  # Первый ход у игрока player_names[0].
 
@@ -51,13 +49,12 @@ def game_logic(player_names: list[str],
         hand: list[str] = []
         # Кубок с костями.
         dice_cup: list[str] = (
-                ([GOLD] * GOLD_QUANTITY) +
-                ([SILVER] * SILVER_QUANTITY) +
-                ([BRONZE] * BRONZE_QUANTITY)
+            ([GOLD] * GOLD_QUANTITY)
+            + ([SILVER] * SILVER_QUANTITY)
+            + ([BRONZE] * BRONZE_QUANTITY)
         )
 
-        print(get_message('turn_player')
-              .format(name=player_names[turn]))
+        print(get_message("turn_player").format(name=player_names[turn]))
         while True:  # Цикл бросков костей.
             print()
             if dice_exists(hand, dice_cup, player_names, turn):
@@ -81,26 +78,20 @@ def game_logic(player_names: list[str],
             draw_rolls_block(roll_results)
             show_caption_rolls(hand)
 
-            print(
-                get_message(
-                    "collected"
-                ).format(stars=stars, skulls=skulls)
-            )
+            print(get_message("collected").format(stars=stars, skulls=skulls))
 
-            logger.info(f'Игрок {player_names[turn]}'
-                         f' бросил(а) кости: {stars} звезды, {skulls} череп.')
+            logger.info(
+                f"Игрок {player_names[turn]}"
+                f" бросил(а) кости: {stars} звезды, "
+                f"{skulls} череп."
+            )
 
             if skulls >= 3:
                 print(get_message("alot_of_skulls"))
                 input(get_message("pres_to_continue"))
                 break
 
-            print(
-                get_message(
-
-                    "roll_again").
-                format(name=player_names[turn])
-            )
+            print(get_message("roll_again").format(name=player_names[turn]))
             while True:  # Цикл до ввода Y или N:
                 response: str = input("> ").upper()
 
@@ -110,20 +101,27 @@ def game_logic(player_names: list[str],
                 print(get_message("yes_or_no"))
 
             if response.startswith("N"):
-                print(get_message(
-
-                    "player_stars").format(name=player_names[turn], stars=stars))
+                print(
+                    get_message("player_stars").format(
+                        name=player_names[turn],
+                        stars=stars,
+                    )
+                )
                 player_scores[player_names[turn]] += stars
 
-                if (end_game_with is None
-                        and player_scores[player_names[turn]] >= WIN_SCORE):
+                if (
+                    end_game_with is None
+                    and player_scores[player_names[turn]] >= WIN_SCORE
+                ):
                     width_break_line: str = "!" * 60
 
                     print(f"\n\n{width_break_line}")
-                    print(get_message(
-
-                        "player_reached_win_score")
-                          .format(name=player_names[turn], score=WIN_SCORE))
+                    print(
+                        get_message("player_reached_win_score").format(
+                            name=player_names[turn],
+                            score=WIN_SCORE,
+                        )
+                    )
                     print(get_message("extra_turn_notification"))
                     print(f"{width_break_line}\n\n")
 
@@ -150,7 +148,7 @@ def run() -> None:
 
     num_players = PLAYERS_COUNT or get_players_count()
 
-    logger.info(f'Игра начата. Кол-во игроков: {num_players}')
+    logger.info(f"Игра начата. Кол-во игроков: {num_players}")
 
     player_names: list[str] = []
     player_scores: dict[str, int] = {}
@@ -160,7 +158,9 @@ def run() -> None:
 
     winners: list[str] = get_winners(player_scores)
 
-    logger.info(f'Игра завершена. Победитель: {winners[0]} с {player_scores[winners[0]]} очками.')
+    logger.info(
+        f"Игра завершена. Победитель: {winners[0]} с {player_scores[winners[0]]} очками."
+    )
 
     print_scores_info(player_names, player_scores)
     print_winners(winners)
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="[%(asctime)s] [%(levelname)s] %(message)s",
         filename=LOGS_FILE_PATH,
-        datefmt='%Y-%m-%d %H:%M:%S'
+        datefmt="%Y-%m-%d %H:%M:%S",
     )
     logger = logging.getLogger(__name__)
 
